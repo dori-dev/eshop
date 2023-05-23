@@ -22,3 +22,8 @@ svg {
   height: 18px;
   fill: #fefefe;
 }
+
+img {
+  height: 250px !important;
+  object-fit: cover;
+}

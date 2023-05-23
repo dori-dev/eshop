@@ -1,4 +1,4 @@
-import products from "../data/products";
+import products from "../products";
 import Products from "./products/products";
 
 const Home = () => {
