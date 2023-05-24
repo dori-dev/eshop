@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Reviews from "./reviews";
 
 const roundReviews = (reviews) => {
@@ -23,13 +24,13 @@ const roundReviews = (reviews) => {
 const Product = ({ product }) => {
   return (
     <div className="card p-3 h-100" style={{ width: "18rem" }}>
-      <a href={`/product/${product._id}`} className="mb-4">
+      <Link to={`/product/${product._id}`} className="mb-4">
         <img src={product.image} className="card-img-top" alt={product.name} />
-      </a>
+      </Link>
       <div className="card-body">
-        <a href={`/product/${product._id}`} className="text-dark">
+        <Link to={`/product/${product._id}`} className="text-dark">
           <h3 className="fs-4">{product.name}</h3>
-        </a>
+        </Link>
         <p className="text-muted">
           <Reviews rate={product.rating} />
           <span>
