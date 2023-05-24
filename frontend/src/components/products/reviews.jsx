@@ -41,8 +41,8 @@ const Reviews = ({ rate }) => {
     <div className="d-inline me-1">
       {Array(fullStarCount)
         .fill(null)
-        .map(() => (
-          <span>{fullStar}</span>
+        .map((_, i) => (
+          <span key={i}>{fullStar}</span>
         ))}
       <span>{starValue}</span>
       {emptyStarCount < 1 ? (
@@ -50,7 +50,7 @@ const Reviews = ({ rate }) => {
       ) : (
         Array(emptyStarCount)
           .fill(null)
-          .map(() => <span>{emptyStar}</span>)
+          .map((_, i) => <span key={i + fullStarCount}>{emptyStar}</span>)
       )}
     </div>
   );

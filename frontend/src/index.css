@@ -34,3 +34,22 @@ svg {
   margin: 0 0.1rem 0.25rem 0;
   fill: #f39c12;
 }
+
+.go-back-icon {
+  fill: #111;
+  transition: fill 0.2s;
+}
+
+a:hover .go-back-icon {
+  fill: #fefefe;
+}
+
+.product-image {
+  width: 100%;
+  height: 70vh;
+  object-fit: contain;
+}
+
+.dollar {
+  color: #16a085;
+}
