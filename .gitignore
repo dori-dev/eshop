@@ -22,3 +22,7 @@ yarn-error.log*
 
 img/
 products.js
+
+env/
+db.sqlite3
+__pycache__
