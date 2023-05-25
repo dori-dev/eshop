@@ -1,9 +1,9 @@
-from django.views import View
-from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
-class Hello(View):
+class Hello(APIView):
     def get(self, request):
-        return JsonResponse({
+        return Response({
             'msg': "Hello, World!",
         })
