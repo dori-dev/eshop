@@ -7,9 +7,7 @@ const Home = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get(
-          "http://127.0.0.1:8000/api/v1/products/"
-        );
+        const { data } = await axios.get("/api/v1/products/");
         setProducts(data);
       } catch (error) {
         console.log(error.message);
