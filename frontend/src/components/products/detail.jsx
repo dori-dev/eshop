@@ -1,11 +1,26 @@
-import products from "../../products";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Reviews from "./reviews";
 import { roundReviews } from "./functions";
+import axios from "axios";
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const product = products.find((product) => product._id === id);
+  const [product, setProduct] = useState({});
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://127.0.0.1:8000/api/v1/product/${id}/`
+        );
+        console.log(data);
+        setProduct(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    return getData;
+  }, [id]);
   return (
     <div className="container-fluid mt-4">
       <Link to="/" className="btn btn-outline-dark">
