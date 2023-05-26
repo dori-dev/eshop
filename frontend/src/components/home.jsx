@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Products from "./products/products";
 import axios from "axios";
+import ProductsSkeleton from "./skeleton/products";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -18,7 +19,11 @@ const Home = () => {
   return (
     <div className="container-fluid">
       <h1 className="mt-4 mb-5">Latest Products</h1>
-      <Products products={products} />
+      {products.length ? (
+        <Products products={products} />
+      ) : (
+        <ProductsSkeleton />
+      )}
     </div>
   );
 };

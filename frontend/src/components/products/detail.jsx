@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Reviews from "./reviews";
 import { roundReviews } from "./functions";
 import axios from "axios";
+import ProductSkeleton from "../skeleton/product";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -24,7 +25,7 @@ const ProductDetail = () => {
   return (
     <>
       {isLoading ? (
-        <h1>Loading</h1>
+        <ProductSkeleton />
       ) : (
         <div className="container-fluid mt-4">
           <Link to="/" className="btn btn-outline-dark">
