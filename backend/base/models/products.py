@@ -35,7 +35,7 @@ class Product(models.Model):
         decimal_places=1,
         default=5,
     )
-    num_reviews = models.PositiveIntegerField(
+    reviews_count = models.PositiveIntegerField(
         default=0,
     )
     price = models.DecimalField(
