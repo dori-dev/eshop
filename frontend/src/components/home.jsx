@@ -1,28 +1,28 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Products from "./products/products";
-import axios from "axios";
 import ProductsSkeleton from "./skeleton/products";
+import { fetchProducts } from "../actions/productActions";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const getData = async () => {
-    try {
-      const { data } = await axios.get("/api/v1/products/");
-      setProducts(data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  const dispatch = useDispatch();
+  const { error, loading, products } = useSelector(
+    (state) => state.listProduct
+  );
   useEffect(() => {
-    getData();
-  }, []);
+    dispatch(fetchProducts());
+  }, [dispatch]);
   return (
     <div className="container-fluid">
       <h1 className="mt-4 mb-5">Latest Products</h1>
-      {products.length ? (
-        <Products products={products} />
-      ) : (
+      {loading ? (
         <ProductsSkeleton />
+      ) : error ? (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      ) : (
+        <Products products={products} />
       )}
     </div>
   );

@@ -6,8 +6,8 @@ const ProductsSkeleton = () => {
     <div className="row">
       {Array(6)
         .fill(null)
-        .map(() => (
-          <div className="col-xl-3 col-lg-4 col-md-6 mb-5 text-center">
+        .map((_, i) => (
+          <div key={i} className="col-xl-3 col-lg-4 col-md-6 mb-5 text-center">
             <div className="card p-3 h-100" style={{ width: "18rem" }}>
               <Skeleton
                 className="mb-2 rounded-3"
