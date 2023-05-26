@@ -10,12 +10,11 @@ export const fetchProducts = () => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    console.log();
     dispatch({
       type: PRODUCT_LIST.FAIL,
       payload:
         error.message && error.response
-          ? error.response.data.message
+          ? error.response.data.message || error.message
           : error.message,
     });
   }

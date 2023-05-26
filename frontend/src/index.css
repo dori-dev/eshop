@@ -52,3 +52,9 @@ a:hover .go-back-icon {
 .dollar {
   color: #16a085;
 }
+
+.alert-icon {
+  fill: #58151c;
+  width: 25px;
+  height: 25px;
+}
