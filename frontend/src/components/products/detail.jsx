@@ -52,7 +52,7 @@ const ProductDetail = () => {
                 <li className="list-group-item">
                   <Reviews rate={product.rating} />
                   <span>
-                    from <b>{roundReviews(product.numReviews)}</b> reviews
+                    from <b>{roundReviews(product.reviews_count)}</b> reviews
                   </span>
                 </li>
               </ul>
@@ -75,13 +75,13 @@ const ProductDetail = () => {
                       <strong>Status:</strong>
                     </div>
                     <div className="col-6">
-                      {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+                      {product.count_in_stock > 0 ? "In Stock" : "Out of Stock"}
                     </div>
                   </div>
                 </li>
                 <li className="list-group-item">
                   <button
-                    disabled={product.countInStock === 0}
+                    disabled={product.count_in_stock === 0}
                     className="btn btn-dark w-100"
                   >
                     Add to Cart

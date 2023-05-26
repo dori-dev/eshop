@@ -12,7 +12,11 @@ class ProductsAPIView(APIView):
 
     def get(self, request):
         products = Product.objects.all()
-        serializer = self.serializer_class(products, many=True)
+        serializer = self.serializer_class(
+            products,
+            many=True,
+            context={'request': request},
+        )
         return Response(serializer.data, status.HTTP_200_OK)
 
 
@@ -24,5 +28,8 @@ class ProductAPIView(APIView):
             Product,
             pk=pk,
         )
-        serializer = self.serializer_class(product)
+        serializer = self.serializer_class(
+            product,
+            context={'request': request},
+        )
         return Response(serializer.data, status.HTTP_200_OK)
