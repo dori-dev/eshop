@@ -8,18 +8,19 @@ const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const getData = async () => {
+    try {
+      const { data } = await axios.get(`/api/v1/product/${id}/`);
+      setProduct(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get(`/api/v1/product/${id}/`);
-        setProduct(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    return getData;
-  }, [id]);
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       {isLoading ? (

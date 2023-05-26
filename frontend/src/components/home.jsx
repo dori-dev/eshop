@@ -4,16 +4,16 @@ import axios from "axios";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const getData = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/products/");
+      setProducts(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get("/api/v1/products/");
-        setProducts(data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    return getData;
+    getData();
   }, []);
   return (
     <div className="container-fluid">
