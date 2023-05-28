@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import Reviews from "./reviews";
@@ -8,6 +9,7 @@ import { fetchProduct } from "../../actions/productActions";
 import Message from "../message";
 
 const ProductDetail = () => {
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -17,6 +19,9 @@ const ProductDetail = () => {
   useEffect(() => {
     dispatch(fetchProduct(id));
   }, [dispatch, id]);
+  const addToCartHandler = () => {
+    navigate(`/cart/${id}?quantity=${quantity}`);
+  };
   return (
     <div className="container-fluid mt-4">
       <Link to="/" className="btn btn-outline-dark">
@@ -108,6 +113,7 @@ const ProductDetail = () => {
               <li className="list-group-item">
                 <button
                   disabled={product.count_in_stock === 0}
+                  onClick={addToCartHandler}
                   className="btn btn-dark w-100"
                 >
                   Add to Cart
