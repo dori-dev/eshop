@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import Reviews from "./reviews";
@@ -8,6 +8,7 @@ import { fetchProduct } from "../../actions/productActions";
 import Message from "../message";
 
 const ProductDetail = () => {
+  const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
   const dispatch = useDispatch();
   const { error, loading, product } = useSelector(
@@ -78,6 +79,32 @@ const ProductDetail = () => {
                   </div>
                 </div>
               </li>
+              {product.count_in_stock > 0 ? (
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6">
+                      <strong>Quantity:</strong>
+                    </div>
+                    <div className="col-6">
+                      <select
+                        className="form-select"
+                        aria-label="Select quantity"
+                        onChange={(e) => setQuantity(e.target.value)}
+                      >
+                        {Array(product.count_in_stock)
+                          .fill(null)
+                          .map((_, i) => (
+                            <option key={i} value={i + 1}>
+                              {i + 1}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  </div>
+                </li>
+              ) : (
+                <></>
+              )}
               <li className="list-group-item">
                 <button
                   disabled={product.count_in_stock === 0}
