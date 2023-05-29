@@ -67,6 +67,17 @@ a:hover .go-back-icon {
 
 .title-icon {
   fill: #111;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
+}
+
+.trash-icon {
+  width: 25px;
+  height: 25px;
+  fill: #c0392b;
+  transition: fill 0.3s;
+}
+
+.trash-icon:hover {
+  fill: #e74c3c;
 }

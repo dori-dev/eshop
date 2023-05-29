@@ -1,6 +1,6 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "./message";
 
@@ -50,7 +50,7 @@ const Cart = () => {
               {cartItems.map((item, i) => (
                 <li key={i} className="list-group-item">
                   <div className="row align-items-center">
-                    <div className="col-sm-3 col-4">
+                    <div className="col-3">
                       <Link
                         to={`/product/${item.product}`}
                         className="d-flex justify-content-start justify-content-md-center"
@@ -62,7 +62,7 @@ const Cart = () => {
                         />
                       </Link>
                     </div>
-                    <div className="col-sm-9 col-8 row">
+                    <div className="col-sm-8 col-8 row">
                       <div className="col-sm-6 col-12 mb-sm-0 mb-3">
                         <Link to={`/product/${item.product}`}>{item.name}</Link>
                       </div>
@@ -87,6 +87,16 @@ const Cart = () => {
                             ))}
                         </select>
                       </div>
+                    </div>
+                    <div className="col-1 text-end">
+                      <svg
+                        onClick={() => dispatch(removeFromCart(item.product))}
+                        className="trash-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                      >
+                        <path d="M32 464C32 490.5 53.5 512 80 512h288c26.5 0 48-21.5 48-48V128H32V464zM304 208C304 199.1 311.1 192 320 192s16 7.125 16 16v224c0 8.875-7.125 16-16 16s-16-7.125-16-16V208zM208 208C208 199.1 215.1 192 224 192s16 7.125 16 16v224c0 8.875-7.125 16-16 16s-16-7.125-16-16V208zM112 208C112 199.1 119.1 192 128 192s16 7.125 16 16v224C144 440.9 136.9 448 128 448s-16-7.125-16-16V208zM432 32H320l-11.58-23.16c-2.709-5.42-8.25-8.844-14.31-8.844H153.9c-6.061 0-11.6 3.424-14.31 8.844L128 32H16c-8.836 0-16 7.162-16 16V80c0 8.836 7.164 16 16 16h416c8.838 0 16-7.164 16-16V48C448 39.16 440.8 32 432 32z" />
+                      </svg>
                     </div>
                   </div>
                 </li>
