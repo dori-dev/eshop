@@ -5,11 +5,16 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { listProductReducer, detailProductReducer } from "./reducers/productReducers";
+import {
+  listProductReducer,
+  detailProductReducer,
+} from "./reducers/productReducers";
+import { cartReducer } from "./reducers/cartReducers";
 
 const reducer = combineReducers({
   listProduct: listProductReducer,
   detailProduct: detailProductReducer,
+  cart: cartReducer,
 });
 const initialState = {};
 const middleware = [thunk];
