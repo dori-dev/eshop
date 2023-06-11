@@ -10,8 +10,9 @@ class UserProfile(APIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
+    serializer_class = serializers.UserSerializer
 
     def get(self, request):
         user = request.user
-        serializer = serializers.UserSerializer(user, many=False)
+        serializer = self.serializer_class(user, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
