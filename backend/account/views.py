@@ -7,6 +7,9 @@ from django.contrib.auth import get_user_model
 from account import serializers
 
 
+User = get_user_model()
+
+
 class UserProfileAPIView(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -26,6 +29,19 @@ class UserListAPIView(APIView):
     serializer_class = serializers.UserSerializer
 
     def get(self, request):
-        users = get_user_model().objects.all()
+        users = User.objects.all()
         serializer = self.serializer_class(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class RegisterAPIView(APIView):
+    serializer_class = serializers.RegisterSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(
+            data=request.data,
+        )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        result = serializers.UserTokenSerializer(user, many=False)
+        return Response(result.data, status=status.HTTP_201_CREATED)
