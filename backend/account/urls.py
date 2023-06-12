@@ -4,5 +4,6 @@ from account import views
 
 
 urlpatterns = [
-    path('profile/', views.UserProfile.as_view()),
+    path('profile/', views.UserProfileAPIView.as_view()),
+    path('', views.UserListAPIView.as_view()),
 ]

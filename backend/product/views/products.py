@@ -7,7 +7,7 @@ from product.models import Product
 from product.serializers import ProductSerializer
 
 
-class ProductsAPIView(APIView):
+class ProductListAPIView(APIView):
     serializer_class = ProductSerializer
 
     def get(self, request):
@@ -20,7 +20,7 @@ class ProductsAPIView(APIView):
         return Response(serializer.data, status.HTTP_200_OK)
 
 
-class ProductAPIView(APIView):
+class ProductDetailAPIView(APIView):
     serializer_class = ProductSerializer
 
     def get(self, request, pk):
