@@ -23,6 +23,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         write_only_fields = [
             'password',
         ]
+        extra_kwargs = {
+            'email': {
+                'required': True,
+                'allow_blank': False,
+            },
+        }
 
     def save(self, **kwargs):
         data = self.validated_data
