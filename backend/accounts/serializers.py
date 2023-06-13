@@ -53,11 +53,11 @@ class UserSerializer(serializers.ModelSerializer):
             'id',
         ]
 
-    def get_name(self, obj):
+    def get_name(self, obj) -> str:
         name = f"{obj.first_name} {obj.last_name}".strip()
         return name or 'Guest User'
 
-    def get_is_admin(self, obj):
+    def get_is_admin(self, obj) -> bool:
         return obj.is_staff
 
 
@@ -75,7 +75,7 @@ class UserTokenSerializer(UserSerializer):
             'token',
         ]
 
-    def get_token(self, obj):
+    def get_token(self, obj) -> dict:
         token = RefreshToken.for_user(obj)
         return {
             'refresh': str(token),

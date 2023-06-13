@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from product import models
+from products import models
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'reviews_count',
         ]
 
-    def get_image(self, product: models.Product):
+    def get_image(self, product: models.Product) -> str:
         request = self.context.get('request')
         if request:
             image_url = product.image.url

@@ -25,8 +25,8 @@ auth = [
 ]
 
 api = [
-    path('products/', include('product.urls')),
-    path('account/', include('account.urls')),
+    path('products/', include('products.urls')),
+    path('accounts/', include('accounts.urls')),
 ]
 
 urlpatterns = [
