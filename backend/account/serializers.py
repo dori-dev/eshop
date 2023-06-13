@@ -11,7 +11,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id',
-            'username',
             'email',
             'first_name',
             'last_name',
@@ -32,6 +31,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         data = self.validated_data
+        data['username'] = data['email']
         user = User.objects.create_user(**data)
         return user
 
