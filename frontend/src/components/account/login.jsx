@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { userLoginAction } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
+import Message from "../message";
 
 const Login = () => {
   const { search } = useLocation();
@@ -32,9 +33,10 @@ const Login = () => {
   return (
     <>
       <Form>
-        <h1>Login</h1>
+        <h1 className="mb-4">Login</h1>
+        {error && <Message variant="danger" message={error} />}
         <form onSubmit={submitHandler}>
-          <div className="mb-3 mt-4">
+          <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email Address
             </label>
