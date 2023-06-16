@@ -81,3 +81,12 @@ a:hover .go-back-icon {
 .trash-icon:hover {
   fill: #e74c3c;
 }
+
+.dropdown-menu[data-bs-popper] {
+  margin-top: 0;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: transparent;
+}
