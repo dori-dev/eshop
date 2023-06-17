@@ -55,8 +55,8 @@ a:hover .go-back-icon {
 }
 
 .alert-icon {
-  width: 25px;
-  height: 25px;
+  width: 17px;
+  height: 17px;
 }
 
 .cart-img {
@@ -80,4 +80,13 @@ a:hover .go-back-icon {
 
 .trash-icon:hover {
   fill: #e74c3c;
+}
+
+.dropdown-menu[data-bs-popper] {
+  margin-top: 0;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: transparent;
 }

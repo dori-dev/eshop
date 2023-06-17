@@ -29,11 +29,11 @@ const Message = ({ variant, message }) => {
   };
   return (
     <div
-      className={`alert alert-${variant} d-flex align-items-center me-md-5`}
+      className={`alert alert-${variant} d-flex align-items-center me-md-5 p-2`}
       role="alert"
     >
       {icon[variant]}
-      <div className="fs-4">{message}</div>
+      <div className="fs-6">{message}</div>
     </div>
   );
 };
