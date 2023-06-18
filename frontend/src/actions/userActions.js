@@ -10,7 +10,7 @@ export const userLoginAction = (email, password) => async (dispatch) => {
       },
     };
     const { data } = await axios.post(
-      "/api/v1/token/",
+      "/api/v1/accounts/token/",
       {
         username: email,
         password: password,

@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -29,6 +30,14 @@ class RegisterSerializer(serializers.ModelSerializer):
                 'allow_blank': False,
             },
         }
+
+    def update(self):
+        data = self.validated_data
+        data['username'] = data['email']
+        data['password'] = make_password(data['password'])
+        user = User.objects.filter(pk=self.instance.pk)
+        user.update(**data)
+        return user.first()
 
     def save(self, **kwargs):
         data = self.validated_data
