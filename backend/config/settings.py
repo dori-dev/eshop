@@ -27,7 +27,6 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'base.apps.BaseConfig',
     'products.apps.ProductsConfig',
     'accounts.apps.AccountsConfig',
 ]
@@ -153,5 +152,5 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(weeks=4*12),
     "UPDATE_LAST_LOGIN": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "TOKEN_OBTAIN_SERIALIZER": "base.serializers.CustomTokenObtainPairSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "accounts.serializers.CustomTokenObtainPairSerializer",
 }
