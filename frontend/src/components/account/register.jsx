@@ -4,6 +4,17 @@ import { useState, useEffect } from "react";
 import { userRegisterAction } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../message";
+import RingLoader from "react-spinners/RingLoader";
+
+const override = {
+  display: "block",
+  position: "fixed",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  margin: "0 auto",
+  borderColor: "#111",
+};
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -49,6 +60,17 @@ const Register = () => {
       <Form>
         <h1 className="mb-4">Register</h1>
         {error && <Message variant="danger" message={error} />}
+        {loading ? (
+          <RingLoader
+            color="#000"
+            loading={loading}
+            cssOverride={override}
+            size={150}
+            aria-label="Loading"
+          />
+        ) : (
+          <></>
+        )}
         <form onSubmit={submitHandler}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
