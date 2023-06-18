@@ -51,7 +51,7 @@ export const userRegisterAction =
       const { data } = await axios.post(
         "/api/v1/accounts/register/",
         {
-          name: name,
+          first_name: name,
           email: email,
           password: password,
         },
