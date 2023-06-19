@@ -5,20 +5,26 @@ from django.conf.urls.static import static
 from drf_spectacular.views import (
     SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView,
 )
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+document = [
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema')),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema')),
+]
+
+
+api = [
+    path('accounts/', include('accounts.urls')),
+    path('products/', include('products.urls')),
+    path('partners/', include('partners.urls')),
+    path('transactions/', include('transactions.urls')),
+]
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('', SpectacularSwaggerView.as_view(url_name='schema')),
-    path('redoc/', SpectacularRedocView.as_view(url_name='schema')),
-    path('products/', include('products.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('partners/', include('partners.urls')),
-    path('accounts/', include('accounts.urls')),
-    path('transactions/', include('transactions.urls'))
+    path('', include(document)),
+    path('api/v1/', include(api)),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
