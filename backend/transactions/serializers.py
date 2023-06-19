@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from transactions.models import Transaction, TransactionTransfer
+from transactions.models import Transaction, TransactionTransfer, UserBalance
 
 User = get_user_model()
 
@@ -23,3 +23,9 @@ class TransferSerializer(serializers.Serializer):
             return None
         instance = TransactionTransfer.send_to(sender=user, receiver=receiver, amount=amount)
         return instance
+
+
+class UserBalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserBalance
+        fields = ('balance', 'user', 'created_time')

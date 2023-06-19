@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from django.db.models import Q, Sum
 from django.db.models.functions import Coalesce
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 User = get_user_model()
 
@@ -42,8 +44,8 @@ class Transaction(models.Model):
 
     @classmethod
     def get_user_balance(cls, user):
-        positive_transactions = Sum('amount', filter=Q(transaction_type__in=[2]))
-        negative_transactions = Sum('amount', filter=Q(transaction_type__in=[1]))
+        positive_transactions = Sum('amount', filter=Q(transaction_type__in=[2, 4, 6]))
+        negative_transactions = Sum('amount', filter=Q(transaction_type__in=[3, 5, 7]))
         balance = user.transactions.all().aggregate(
             balance=Coalesce(positive_transactions, 0)-Coalesce(negative_transactions, 0))
         return balance.get('balance', None)
@@ -94,3 +96,9 @@ class UserBalance(models.Model):
         for user in User.objects.all():
             cls.create_user_balance(user)
         return True
+
+
+@receiver(post_save, sender=Transaction)
+def create_balance_signal(sender, created, instance, **kwargs):
+    if created:
+        UserBalance.create_user_balance(instance.user)

@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from transactions.models import Transaction
-from transactions.serializers import TransactionSerializer, TransferSerializer
+from transactions.models import Transaction, UserBalance
+from transactions.serializers import TransactionSerializer, TransferSerializer, UserBalanceSerializer
 
 
 class TransactionListView(APIView):
@@ -40,4 +40,15 @@ class TransferView(APIView):
                 return Response('Mojodi kafi nis')
             return Response(status=status.HTTP_400_BAD_REQUEST)
         transaction_serializer = TransactionSerializer(instance.sent_transaction)
-        return Response(transaction_serializer.data,status=status.HTTP_200_OK)
+        return Response(transaction_serializer.data, status=status.HTTP_200_OK)
+
+
+class UserBalanceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_balance = UserBalance.objects.get(user=request.user)
+        if not user_balance:
+            return Response('0')
+        serializer = UserBalanceSerializer(user_balance)
+        return Response(serializer.data)
