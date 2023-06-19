@@ -4,6 +4,32 @@ from partners.serializers import PartnerStockSerializer
 from products.models import Product, ProductAttributeValue
 
 
+from rest_framework import serializers
+
+from products import models
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Product
+        fields = '__all__'
+        read_only_fields = [
+            'user',
+            'id',
+            'rating',
+            'reviews_count',
+        ]
+
+    def get_image(self, product: models.Product) -> str:
+        request = self.context.get('request')
+        if request:
+            image_url = product.image.url
+            return request.build_absolute_uri(image_url)
+        return product.image.url
+
+
 class ProductSerializer(serializers.ModelSerializer):
     stock = serializers.SerializerMethodField()
     attributes = serializers.SerializerMethodField()
@@ -23,7 +49,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('name', 'brand_name', 'category_name', 'product_type_name', 'stock', 'attributes')
+        fields = ('name', 'brand_name', 'category_name',
+                  'product_type_name', 'stock', 'attributes')
         extra_kwargs = {
             'stock': {'read_only': True},
             'attributes': {'read_only': True},
@@ -37,4 +64,3 @@ class AttributesValueSerializer(serializers.ModelSerializer):
 
         model = ProductAttributeValue
         fields = ('value', 'attribute_name')
-
