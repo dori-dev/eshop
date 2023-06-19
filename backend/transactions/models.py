@@ -7,6 +7,7 @@ from django.db.models.functions import Coalesce
 
 User = get_user_model()
 
+
 def r():
     x = str(hash(uuid.uuid4()))[:16]
     return x
@@ -30,7 +31,8 @@ class Transaction(models.Model):
         (REDEEM_GIFT_CARD, "Redeem Card"),
         (CREATE_GIFT_CARD, 'Create Card')
     )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='transactions', on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='transactions',
+                             on_delete=models.SET_NULL, null=True)
     transaction_type = models.PositiveSmallIntegerField(choices=TRANSACTION_TYPE_CHOICES, default=DIRECT_PURCHASE)
     amount = models.PositiveBigIntegerField()
     transaction_number = models.CharField(max_length=16, default=r, unique=True)
@@ -42,7 +44,8 @@ class Transaction(models.Model):
     def get_user_balance(cls, user):
         positive_transactions = Sum('amount', filter=Q(transaction_type__in=[2]))
         negative_transactions = Sum('amount', filter=Q(transaction_type__in=[1]))
-        balance = user.transactions.all().aggregate(balance=Coalesce(positive_transactions, 0)-Coalesce(negative_transactions, 0))
+        balance = user.transactions.all().aggregate(
+            balance=Coalesce(positive_transactions, 0)-Coalesce(negative_transactions, 0))
         return balance.get('balance', None)
 
 
@@ -57,7 +60,7 @@ class TransactionTransfer(models.Model):
     @classmethod
     def send_to(cls, sender, receiver, amount):
         if Transaction.get_user_balance(sender) < amount:
-            return None
+            return False
         with transaction.atomic():
             transaction_sent = Transaction.objects.create(user=sender, amount=amount,
                                                           transaction_type=Transaction.SENT_TRANSACTION)
@@ -68,8 +71,7 @@ class TransactionTransfer(models.Model):
                                           received_transaction=transaction_received, amount=amount)
         if instance:
             return instance
-        return False
-
+        return None
 
 
 class UserBalance(models.Model):
