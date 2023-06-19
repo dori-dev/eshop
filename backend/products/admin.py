@@ -1,10 +1,40 @@
 from django.contrib import admin
+from django.contrib.admin import register
 
-from products import models
+from products.models import Product, Category, Brand, ProductAttributeValue, ProductType, ProductAttribute
 
 
-admin.site.register(models.Product)
-admin.site.register(models.Review)
-admin.site.register(models.Order)
-admin.site.register(models.OrderItem)
-admin.site.register(models.ShippingAddress)
+class ProductAttributeValueInline(admin.TabularInline):
+    model = ProductAttributeValue
+    extra = 1
+
+
+class ProductAttributeInline(admin.TabularInline):
+    model = ProductAttribute
+    extra = 3
+
+
+# Register your models here.
+@register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = (ProductAttributeValueInline, )
+
+
+@register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@register(Brand)
+class BrandAdmin(admin.ModelAdmin):
+    pass
+
+
+@register(ProductType)
+class ProductTypeAdmin(admin.ModelAdmin):
+    inlines = (ProductAttributeInline, )
+
+
+
+
+

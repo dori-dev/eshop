@@ -1,9 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
 
 User = get_user_model()
 
@@ -31,14 +28,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             },
         }
 
-    def update(self):
-        data = self.validated_data
-        data['username'] = data['email']
-        data['password'] = make_password(data['password'])
-        user = User.objects.filter(pk=self.instance.pk)
-        user.update(**data)
-        return user.first()
-
     def save(self, **kwargs):
         data = self.validated_data
         data['username'] = data['email']
@@ -49,6 +38,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     is_admin = serializers.SerializerMethodField(read_only=True)
+    is_partner = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -58,6 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'name',
             'is_admin',
+            'is_partner'
         ]
         read_only_fields = [
             'id',
@@ -69,6 +60,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_admin(self, obj) -> bool:
         return obj.is_staff
+
+    def get_is_partner(self, obj):
+        return obj.is_partner
 
 
 class UserTokenSerializer(UserSerializer):
@@ -91,16 +85,3 @@ class UserTokenSerializer(UserSerializer):
             'refresh': str(token),
             'access': str(token.access_token),
         }
-
-
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['username'] = user.username
-        return token
-
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        data['username'] = self.user.get_username()
-        return data
