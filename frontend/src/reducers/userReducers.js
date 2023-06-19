@@ -1,4 +1,8 @@
-import { USER_LOGIN, USER_REGISTER } from "../constants/userConstants";
+import {
+  USER_LOGIN,
+  USER_REGISTER,
+  USER_DETAILS,
+} from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
   switch (action.type) {
@@ -25,6 +29,21 @@ export const userRegisterReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_REGISTER.LOGOUT:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userDetailsReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case USER_DETAILS.REQUEST:
+      return { ...state, loading: true };
+    case USER_DETAILS.SUCCESS:
+      return { user: action.payload, loading: false };
+    case USER_DETAILS.FAIL:
+      return { error: action.payload, loading: false };
+    case USER_DETAILS.RESET:
+      return { user: {} };
     default:
       return state;
   }

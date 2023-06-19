@@ -1,4 +1,8 @@
-import { USER_LOGIN, USER_REGISTER } from "../constants/userConstants";
+import {
+  USER_LOGIN,
+  USER_REGISTER,
+  USER_DETAILS,
+} from "../constants/userConstants";
 import axios from "axios";
 
 export const userLoginAction = (email, password) => async (dispatch) => {
@@ -79,3 +83,31 @@ export const userRegisterAction =
       });
     }
   };
+
+export const getUserDetailsAction = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_DETAILS.REQUEST });
+    const {
+      user: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.access}`,
+      },
+    };
+    const { data } = await axios.get("/api/v1/accounts/profile/", config);
+    dispatch({
+      type: USER_DETAILS.SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DETAILS.FAIL,
+      payload:
+        error.message && error.response
+          ? error.response.data.message || error.message
+          : error.message,
+    });
+  }
+};
