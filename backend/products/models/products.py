@@ -61,4 +61,6 @@ class Product(models.Model):
         return self.name
 
     def get_stock(self):
-        return self.stock.filter(is_active=True).order_by('price')
+        return self.stock.filter(
+            is_active=True,
+        ).order_by('price')
