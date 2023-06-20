@@ -94,13 +94,15 @@ class UserTokenSerializer(UserSerializer):
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['username'] = user.username
-        return token
-
     def validate(self, attrs):
-        data = super().validate(attrs)
-        data['username'] = self.user.get_username()
-        return data
+        result = {
+            'token': super().validate(attrs)
+        }
+        user = self.user
+        result['id'] = user.pk
+        result['username'] = user.get_username()
+        result['email'] = user.email
+        name = f"{user.first_name} {user.last_name}".strip()
+        result['name'] = name or 'Guest User'
+        result['is_admin'] = user.is_staff
+        return result

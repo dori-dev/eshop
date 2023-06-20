@@ -5,16 +5,17 @@ from products import models
 
 class ProductSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
-    category_name = serializers.CharField(source='category.name')
+    category = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Product
         fields = [
+            'id',
             'user',
             'name',
             'image',
             'brand',
-            'category_name',
+            'category',
             'description',
             'rating',
             'reviews_count',
@@ -37,3 +38,8 @@ class ProductSerializer(serializers.ModelSerializer):
             image_url = product.image.url
             return request.build_absolute_uri(image_url)
         return product.image.url
+
+    def get_category(self, product: models.Product) -> str:
+        if product.category:
+            return product.category.name
+        return None
