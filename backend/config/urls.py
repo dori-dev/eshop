@@ -16,8 +16,6 @@ document = [
 api = [
     path('accounts/', include('accounts.urls')),
     path('products/', include('products.urls')),
-    path('partners/', include('partners.urls')),
-    path('transactions/', include('transactions.urls')),
 ]
 
 

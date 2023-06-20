@@ -29,8 +29,6 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'products.apps.ProductsConfig',
     'accounts.apps.AccountsConfig',
-    'transactions.apps.TransactionsConfig',
-    'partners.apps.PartnersConfig',
 ]
 
 INSTALLED_APPS = [
