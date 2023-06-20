@@ -41,6 +41,7 @@ export const userLogoutAction = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_LOGIN.LOGOUT });
   dispatch({ type: USER_REGISTER.LOGOUT });
+  dispatch({ type: USER_DETAILS.RESET });
 };
 
 export const userRegisterAction =
@@ -93,7 +94,7 @@ export const getUserDetailsAction = () => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${userInfo.access}`,
+        Authorization: `Bearer ${userInfo.token.access}`,
       },
     };
     const { data } = await axios.get("/api/v1/accounts/profile/", config);

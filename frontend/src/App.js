@@ -6,6 +6,7 @@ import Cart from "./components/cart";
 import ProductDetail from "./components/products/detail";
 import Login from "./components/account/login";
 import Register from "./components/account/register";
+import Profile from "./components/account/profile";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/cart/:id?" element={<Cart />} />
       </Routes>
       <Footer />
