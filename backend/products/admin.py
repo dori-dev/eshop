@@ -85,11 +85,6 @@ class OrderItemInline(admin.TabularInline):
     extra = 2
 
 
-class ShippingAddressInline(admin.StackedInline):
-    model = models.ShippingAddress
-    extra = 0
-
-
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
@@ -120,5 +115,27 @@ class OrderAdmin(admin.ModelAdmin):
     ]
     inlines = [
         OrderItemInline,
-        ShippingAddressInline,
+    ]
+
+
+@admin.register(models.ShippingAddress)
+class ShippingAddressAdmin(admin.ModelAdmin):
+    list_display = [
+        'user',
+        'address',
+        'city',
+        'zip_code',
+        'country',
+        'shipping_price',
+    ]
+    search_fields = [
+        'country',
+        'user.username',
+        'address',
+        'city',
+        'zip_code',
+        'country',
+    ]
+    raw_id_fields = [
+        'user',
     ]
