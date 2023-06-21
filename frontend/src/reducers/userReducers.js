@@ -2,6 +2,7 @@ import {
   USER_LOGIN,
   USER_REGISTER,
   USER_DETAILS,
+  UPDATE_PROFILE,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -44,6 +45,21 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
       return { error: action.payload, loading: false };
     case USER_DETAILS.RESET:
       return { user: {} };
+    default:
+      return state;
+  }
+};
+
+export const updateProfileReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_PROFILE.REQUEST:
+      return { loading: true };
+    case UPDATE_PROFILE.SUCCESS:
+      return { loading: false, userInfo: action.payload, success: true };
+    case UPDATE_PROFILE.FAIL:
+      return { loading: false, error: action.payload };
+    case UPDATE_PROFILE.RESET:
+      return {};
     default:
       return state;
   }

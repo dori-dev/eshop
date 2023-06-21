@@ -2,6 +2,7 @@ import {
   USER_LOGIN,
   USER_REGISTER,
   USER_DETAILS,
+  UPDATE_PROFILE,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -42,6 +43,7 @@ export const userLogoutAction = () => (dispatch) => {
   dispatch({ type: USER_LOGIN.LOGOUT });
   dispatch({ type: USER_REGISTER.LOGOUT });
   dispatch({ type: USER_DETAILS.RESET });
+  dispatch({ type: UPDATE_PROFILE.RESET });
 };
 
 export const userRegisterAction =
@@ -105,6 +107,43 @@ export const getUserDetailsAction = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DETAILS.FAIL,
+      payload:
+        error.message && error.response
+          ? error.response.data.message || error.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUserProfileAction = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: UPDATE_PROFILE.REQUEST });
+    const {
+      user: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token.access}`,
+      },
+    };
+    const { data } = await axios.put(
+      "/api/v1/accounts/profile/update/",
+      user,
+      config
+    );
+    dispatch({
+      type: UPDATE_PROFILE.SUCCESS,
+      payload: data,
+    });
+    dispatch({
+      type: USER_LOGIN.SUCCESS,
+      payload: data,
+    });
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFILE.FAIL,
       payload:
         error.message && error.response
           ? error.response.data.message || error.message
