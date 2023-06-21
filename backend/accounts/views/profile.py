@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from django.db.utils import IntegrityError
 
 from accounts import serializers
 
@@ -26,7 +27,7 @@ class UpdateProfileAPIView(APIView):
     permission_classes = [
         permissions.IsAuthenticated
     ]
-    serializer_class = serializers.RegisterSerializer
+    serializer_class = serializers.UpdateUserSerializer
 
     def put(self, request):
         serializer = self.serializer_class(
@@ -34,6 +35,12 @@ class UpdateProfileAPIView(APIView):
             data=request.data,
         )
         serializer.is_valid(raise_exception=True)
-        user = serializer.update()
+        try:
+            user = serializer.update()
+        except IntegrityError:
+            result = {
+                'details': 'This email address already exists!',
+            }
+            return Response(result, status=status.HTTP_400_BAD_REQUEST)
         result = serializers.UserTokenSerializer(user, many=False)
         return Response(result.data, status=status.HTTP_200_OK)

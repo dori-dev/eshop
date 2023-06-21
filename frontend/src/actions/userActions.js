@@ -144,10 +144,7 @@ export const updateUserProfileAction = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PROFILE.FAIL,
-      payload:
-        error.message && error.response
-          ? error.response.data.message || error.message
-          : error.message,
+      payload: error.response ? error.response.data.details : error.message,
     });
   }
 };

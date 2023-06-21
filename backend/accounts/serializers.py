@@ -31,19 +31,49 @@ class RegisterSerializer(serializers.ModelSerializer):
             },
         }
 
-    def update(self):
-        data = self.validated_data
-        data['username'] = data['email']
-        data['password'] = make_password(data['password'])
-        user = User.objects.filter(pk=self.instance.pk)
-        user.update(**data)
-        return user.first()
-
     def save(self, **kwargs):
         data = self.validated_data
         data['username'] = data['email']
         user = User.objects.create_user(**data)
         return user
+
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'email',
+            'first_name',
+            'last_name',
+            'password',
+        ]
+        read_only_fields = [
+            'id',
+        ]
+        write_only_fields = [
+            'password',
+        ]
+        extra_kwargs = {
+            'email': {
+                'required': True,
+                'allow_blank': False,
+            },
+            'password': {
+                'required': False,
+                'allow_blank': True,
+            },
+        }
+
+    def update(self):
+        data = self.validated_data
+        data['username'] = data['email']
+        password = data.get('password')
+        if password:
+            data['password'] = make_password(password)
+        user = User.objects.filter(pk=self.instance.pk)
+        user.update(**data)
+        return user.first()
 
 
 class UserSerializer(serializers.ModelSerializer):
