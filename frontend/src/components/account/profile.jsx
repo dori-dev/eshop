@@ -25,17 +25,21 @@ const Profile = () => {
   // redux
   const { userInfo } = useSelector((state) => state.user);
   const { user, error, loading } = useSelector((state) => state.userDetails);
-  const { error: updateError, success } = useSelector(
-    (state) => state.updateProfile
-  );
+  const {
+    error: updateError,
+    success,
+    loading: updateLoading,
+  } = useSelector((state) => state.updateProfile);
   // local states
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [message, setMessage] = useState("");
+  const [updatedMessage, setUpdatedMessage] = useState("");
   const submitHandler = (e) => {
     e.preventDefault();
+    setUpdatedMessage("");
     if (password && password !== password2) {
       setMessage("Password and confirm password don't match!");
     } else {
@@ -52,8 +56,14 @@ const Profile = () => {
   };
   useEffect(() => {
     if (userInfo) {
+      if (success) {
+        setUpdatedMessage("Profile updated successfully!");
+      }
       if (!user || !user.name || success) {
         dispatch({ type: UPDATE_PROFILE.RESET });
+        setPassword("");
+        setPassword2("");
+        setMessage("");
         dispatch(getUserDetailsAction());
       } else {
         setEmail(user.email);
@@ -68,15 +78,18 @@ const Profile = () => {
       <div className="m-3">
         {error && <Message variant="danger" message={error} />}
         {updateError && <Message variant="danger" message={updateError} />}
+        {updatedMessage && (
+          <Message variant="success" message={updatedMessage} closable={true} />
+        )}
       </div>
       <div className="row container-fluid g-5">
         <div className="col-md-4">
           <div className="row justify-content-md-center">
             <h1 className="mb-4">Profile</h1>
-            {loading ? (
+            {loading || updateLoading ? (
               <RingLoader
                 color="#000"
-                loading={loading}
+                loading={loading || updateLoading}
                 cssOverride={override}
                 size={150}
                 aria-label="Loading"
@@ -145,7 +158,7 @@ const Profile = () => {
               </div>
               <button
                 className={
-                  loading
+                  loading || updateLoading
                     ? "btn btn-primary w-100 disabled"
                     : "btn btn-primary w-100"
                 }

@@ -90,3 +90,12 @@ a:hover .go-back-icon {
 .dropdown-item:active {
   background-color: transparent;
 }
+
+.alert-dismissible .btn-close {
+  position: absolute;
+  top: unset;
+  right: 0;
+  z-index: 2;
+  padding: unset;
+  margin-right: 10px;
+}
