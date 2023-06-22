@@ -1,1 +1,1 @@
-from .products import ProductListAPIView, ProductDetailAPIView
+from .products import ProductListAPIView, ProductDetailAPIView  # noqa
