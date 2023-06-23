@@ -29,6 +29,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'products.apps.ProductsConfig',
     'accounts.apps.AccountsConfig',
+    'utils.apps.UtilsConfig',
 ]
 
 INSTALLED_APPS = [
