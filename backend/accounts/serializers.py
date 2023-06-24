@@ -14,8 +14,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'email',
-            'first_name',
-            'last_name',
+            'name',
             'password',
         ]
         read_only_fields = [
@@ -33,7 +32,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         data = self.validated_data
-        data['username'] = data['email']
         user = User.objects.create_user(**data)
         return user
 
@@ -44,8 +42,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'email',
-            'first_name',
-            'last_name',
+            'name',
             'password',
         ]
         read_only_fields = [
@@ -67,7 +64,6 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     def update(self):
         data = self.validated_data
-        data['username'] = data['email']
         password = data.get('password')
         if password:
             data['password'] = make_password(password)
@@ -77,14 +73,10 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField(read_only=True)
-    is_admin = serializers.SerializerMethodField(read_only=True)
-
     class Meta:
         model = User
         fields = [
             'id',
-            'username',
             'email',
             'name',
             'is_admin',
@@ -92,13 +84,6 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'id',
         ]
-
-    def get_name(self, obj) -> str:
-        name = f"{obj.first_name} {obj.last_name}".strip()
-        return name or 'Guest User'
-
-    def get_is_admin(self, obj) -> bool:
-        return obj.is_staff
 
 
 class UserTokenSerializer(UserSerializer):
@@ -108,7 +93,6 @@ class UserTokenSerializer(UserSerializer):
         model = User
         fields = [
             'id',
-            'username',
             'email',
             'name',
             'is_admin',
@@ -130,9 +114,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         }
         user = self.user
         result['id'] = user.pk
-        result['username'] = user.get_username()
         result['email'] = user.email
-        name = f"{user.first_name} {user.last_name}".strip()
-        result['name'] = name or 'Guest User'
+        result['name'] = user.name or 'Guest User'
         result['is_admin'] = user.is_staff
         return result

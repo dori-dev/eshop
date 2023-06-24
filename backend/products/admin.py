@@ -24,7 +24,7 @@ class ProductAdmin(admin.ModelAdmin):
         'category',
         'brand',
         'name',
-        'user.username',
+        'user.email',
     ]
     date_hierarchy = 'created_at'
     raw_id_fields = [
@@ -70,7 +70,7 @@ class ReviewAdmin(admin.ModelAdmin):
         'name',
         'product.id',
         'product.name',
-        'user.username',
+        'user.email',
         'comment'
     ]
     date_hierarchy = 'created_at'
@@ -107,7 +107,7 @@ class OrderAdmin(admin.ModelAdmin):
     ]
     search_fields = [
         'shipping_address.address',
-        'user.username',
+        'user.email',
     ]
     date_hierarchy = 'created_at'
     raw_id_fields = [
@@ -130,7 +130,7 @@ class ShippingAddressAdmin(admin.ModelAdmin):
     ]
     search_fields = [
         'country',
-        'user.username',
+        'user.email',
         'address',
         'city',
         'zip_code',

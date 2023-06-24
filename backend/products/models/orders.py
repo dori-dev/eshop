@@ -37,7 +37,7 @@ class ShippingAddress(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.user.get_username()} - {self.address}"
+        return f"{self.user.email} - {self.address}"
 
 
 class Order(models.Model):
@@ -93,7 +93,7 @@ class Order(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.user.get_username()} order({self.pk})"
+        return f"{self.user.email} order({self.pk})"
 
 
 class OrderItem(models.Model):
