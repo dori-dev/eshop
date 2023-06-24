@@ -24,6 +24,7 @@ THIRD_PARTY_APPS = [
     'drf_spectacular',
     'corsheaders',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 LOCAL_APPS = [
@@ -151,9 +152,13 @@ CORS_ALLOWED_ORIGINS = [
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(weeks=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(weeks=4*12),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "TOKEN_OBTAIN_SERIALIZER": "accounts.serializers.CustomTokenObtainPairSerializer",
 }
 
 AUTH_USER_MODEL = 'accounts.User'
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
