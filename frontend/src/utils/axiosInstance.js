@@ -5,14 +5,17 @@ import { updateAccessTokenAction } from "../actions/userActions";
 
 const baseURL = "http://127.0.0.1:8000";
 const axiosInstance = (userInfo, dispatch) => {
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  if (userInfo && dispatch) {
+    headers.Authorization = `Bearer ${userInfo?.token?.access}`;
+  }
   const instance = axios.create({
     baseURL,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${userInfo?.token?.access}`,
-    },
+    headers: headers,
   });
-  if (userInfo) {
+  if (userInfo && dispatch) {
     instance.interceptors.request.use(async (request) => {
       const user = jwt_decode(userInfo?.token?.access);
       const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 20 * 1000;

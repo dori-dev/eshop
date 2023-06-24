@@ -5,6 +5,7 @@ import {
   UPDATE_PROFILE,
 } from "../constants/userConstants";
 import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
 export const userLoginAction = (email, password) => async (dispatch) => {
   try {
@@ -93,13 +94,8 @@ export const getUserDetailsAction = () => async (dispatch, getState) => {
     const {
       user: { userInfo },
     } = getState();
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${userInfo.token.access}`,
-      },
-    };
-    const { data } = await axios.get("/api/v1/accounts/profile/", config);
+    const instance = axiosInstance(userInfo, dispatch);
+    const { data } = await instance.get("/api/v1/accounts/profile/");
     dispatch({
       type: USER_DETAILS.SUCCESS,
       payload: data,
@@ -121,16 +117,10 @@ export const updateUserProfileAction = (user) => async (dispatch, getState) => {
     const {
       user: { userInfo },
     } = getState();
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${userInfo.token.access}`,
-      },
-    };
-    const { data } = await axios.put(
+    const instance = axiosInstance(userInfo, dispatch);
+    const { data } = await instance.put(
       "/api/v1/accounts/profile/update/",
-      user,
-      config
+      user
     );
     dispatch({
       type: UPDATE_PROFILE.SUCCESS,
