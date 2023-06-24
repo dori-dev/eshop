@@ -45,7 +45,7 @@ const Profile = () => {
     } else {
       const data = {
         id: user.id,
-        first_name: name,
+        name: name,
         email: email,
       };
       if (password) {
