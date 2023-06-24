@@ -17,7 +17,7 @@ export const userLoginAction = (email, password) => async (dispatch) => {
     const { data } = await axios.post(
       "/api/v1/accounts/token/",
       {
-        username: email,
+        email: email,
         password: password,
       },
       config
@@ -58,7 +58,7 @@ export const userRegisterAction =
       const { data } = await axios.post(
         "/api/v1/accounts/register/",
         {
-          first_name: name,
+          name: name,
           email: email,
           password: password,
         },
@@ -147,4 +147,16 @@ export const updateUserProfileAction = (user) => async (dispatch, getState) => {
       payload: error.response ? error.response.data.details : error.message,
     });
   }
+};
+
+export const updateAccessTokenAction = (tokens) => (dispatch, getState) => {
+  const {
+    user: { userInfo },
+  } = getState();
+  userInfo.token = tokens;
+  dispatch({
+    type: USER_LOGIN.SUCCESS,
+    payload: userInfo,
+  });
+  localStorage.setItem("userInfo", JSON.stringify(userInfo));
 };

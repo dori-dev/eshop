@@ -15,8 +15,7 @@ const axiosInstance = (userInfo, dispatch) => {
   if (userInfo) {
     instance.interceptors.request.use(async (request) => {
       const user = jwt_decode(userInfo?.token?.access);
-      const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 5000;
-      console.log(dayjs.unix(user.exp));
+      const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 20 * 1000;
       if (isExpired) {
         const { data } = await axios.post("/api/v1/accounts/token/refresh/", {
           refresh: userInfo?.refresh,
