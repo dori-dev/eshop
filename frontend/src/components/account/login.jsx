@@ -7,6 +7,7 @@ import Message from "../message";
 import RingLoader from "react-spinners/RingLoader";
 import { useFormik } from "formik";
 import { override, getQueries } from "./utils";
+import * as Yup from "yup";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,15 @@ const Login = () => {
     onSubmit: (values) => {
       dispatch(userLoginAction(values.email, values.password));
     },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Enter valid email address")
+        .required("Email field is required."),
+      password: Yup.string()
+        .max(50, "Password must be 50 characters or less")
+        .min(8, "Password must be 8 characters or more")
+        .required("Password field is required."),
+    }),
   });
   const { error, userInfo, loading } = useSelector((state) => state.user);
   const { search } = useLocation();
@@ -52,13 +62,21 @@ const Login = () => {
             </label>
             <input
               type="email"
-              className="form-control"
+              className={
+                formik.touched.email && formik.errors.email
+                  ? "form-control is-invalid"
+                  : "form-control"
+              }
               id="email"
               placeholder="name@example.com"
-              value={formik.values.email}
-              name="email"
-              onChange={formik.handleChange}
+              onBeforeInput={formik.handleBlur}
+              {...formik.getFieldProps("email")}
             />
+            {formik.touched.email && formik.errors.email ? (
+              <div id="emailFeedback" className="invalid-feedback">
+                {formik.errors.email}
+              </div>
+            ) : null}
           </div>
           <div className="mb-3 mt-2">
             <label htmlFor="password" className="form-label">
@@ -66,13 +84,21 @@ const Login = () => {
             </label>
             <input
               type="password"
-              className="form-control"
+              className={
+                formik.touched.password && formik.errors.password
+                  ? "form-control is-invalid"
+                  : "form-control"
+              }
               id="password"
               placeholder="Enter your password"
-              value={formik.values.password}
-              name="password"
-              onChange={formik.handleChange}
+              onBeforeInput={formik.handleBlur}
+              {...formik.getFieldProps("password")}
             />
+            {formik.touched.password && formik.errors.password ? (
+              <div id="passwordFeedback" className="invalid-feedback">
+                {formik.errors.password}
+              </div>
+            ) : null}
           </div>
           <button
             className={
