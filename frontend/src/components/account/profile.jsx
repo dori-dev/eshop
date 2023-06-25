@@ -8,16 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../message";
 import RingLoader from "react-spinners/RingLoader";
 import { UPDATE_PROFILE } from "../../constants/userConstants";
-
-const override = {
-  display: "block",
-  position: "fixed",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  margin: "0 auto",
-  borderColor: "#111",
-};
+import { override } from "./utils";
 
 const Profile = () => {
   const dispatch = useDispatch();

@@ -5,30 +5,14 @@ import { userRegisterAction } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../message";
 import RingLoader from "react-spinners/RingLoader";
-
-const override = {
-  display: "block",
-  position: "fixed",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  margin: "0 auto",
-  borderColor: "#111",
-};
+import { override, getQueries } from "./utils";
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // redirect parameters
   const { search } = useLocation();
-  let query = {};
-  search
-    .slice(1)
-    .split("&")
-    .forEach((item) => {
-      let [key, value] = item.split("=");
-      query[key] = value;
-    });
+  const query = getQueries(search);
   const redirect = query["redirect"] ? query["redirect"] : "/";
   // redux
   const { error, userInfo, loading } = useSelector(

@@ -1,41 +1,29 @@
 import Form from "../formContainer";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { userLoginAction } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../message";
 import RingLoader from "react-spinners/RingLoader";
-
-const override = {
-  display: "block",
-  position: "fixed",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  margin: "0 auto",
-  borderColor: "#111",
-};
+import { useFormik } from "formik";
+import { override, getQueries } from "./utils";
 
 const Login = () => {
-  const { search } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      dispatch(userLoginAction(values.email, values.password));
+    },
+  });
   const { error, userInfo, loading } = useSelector((state) => state.user);
-  let query = {};
-  search
-    .slice(1)
-    .split("&")
-    .forEach((item) => {
-      let [key, value] = item.split("=");
-      query[key] = value;
-    });
+  const { search } = useLocation();
+  const query = getQueries(search);
   const redirect = query["redirect"] ? query["redirect"] : "/";
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(userLoginAction(email, password));
-  };
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);
@@ -57,7 +45,7 @@ const Login = () => {
         ) : (
           <></>
         )}
-        <form onSubmit={submitHandler}>
+        <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email Address
@@ -67,8 +55,9 @@ const Login = () => {
               className="form-control"
               id="email"
               placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formik.values.email}
+              name="email"
+              onChange={formik.handleChange}
             />
           </div>
           <div className="mb-3 mt-2">
@@ -80,8 +69,9 @@ const Login = () => {
               className="form-control"
               id="password"
               placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formik.values.password}
+              name="password"
+              onChange={formik.handleChange}
             />
           </div>
           <button
