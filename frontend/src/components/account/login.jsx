@@ -12,6 +12,7 @@ import * as Yup from "yup";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // formik
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -30,10 +31,13 @@ const Login = () => {
         .required("Password field is required."),
     }),
   });
+  // redux
   const { error, userInfo, loading } = useSelector((state) => state.user);
+  // redirect parameters
   const { search } = useLocation();
   const query = getQueries(search);
   const redirect = query["redirect"] ? query["redirect"] : "/";
+  // redirect when logged in
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);

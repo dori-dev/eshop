@@ -1,15 +1,50 @@
 import Form from "../formContainer";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { userRegisterAction } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../message";
 import RingLoader from "react-spinners/RingLoader";
 import { override, getQueries } from "./utils";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // formik
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      password2: "",
+    },
+    onSubmit: (values) => {
+      dispatch(userRegisterAction(values.name, values.email, values.password));
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .max(50, "Name must be 50 characters or less.")
+        .min(8, "Name must be 8 characters or more.")
+        .required("Name is required."),
+      email: Yup.string()
+        .email("Enter valid email address.")
+        .required("Email is required."),
+      password: Yup.string()
+        .max(50, "Password must be 50 characters or less.")
+        .min(8, "Password must be 8 characters or more.")
+        .required("Password is required."),
+      password2: Yup.string()
+        .max(50, "Password must be 50 characters or less.")
+        .min(8, "Password must be 8 characters or more.")
+        .required("Confirm password is required.")
+        .oneOf(
+          [Yup.ref("password"), null],
+          "Password and confirm password must match."
+        ),
+    }),
+  });
   // redirect parameters
   const { search } = useLocation();
   const query = getQueries(search);
@@ -18,21 +53,6 @@ const Register = () => {
   const { error, userInfo, loading } = useSelector(
     (state) => state.userRegister
   );
-  // local states
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [message, setMessage] = useState("");
-  // on submit
-  const submitHandler = (e) => {
-    e.preventDefault();
-    if (password !== password2) {
-      setMessage("Password and confirm password don't match!");
-    } else {
-      dispatch(userRegisterAction(name, email, password));
-    }
-  };
   // redirect when logged in
   useEffect(() => {
     if (userInfo) {
@@ -54,33 +74,50 @@ const Register = () => {
       ) : (
         <></>
       )}
-      <form onSubmit={submitHandler}>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email Address
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            placeholder="name@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+      <form onSubmit={formik.handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Full Name
           </label>
           <input
             type="text"
-            className="form-control"
+            className={
+              formik.touched.name && formik.errors.name
+                ? "form-control is-invalid"
+                : "form-control"
+            }
             id="name"
             placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            onBeforeInput={formik.handleBlur}
+            {...formik.getFieldProps("name")}
           />
+          {formik.touched.name && formik.errors.name ? (
+            <div id="nameFeedback" className="invalid-feedback">
+              {formik.errors.name}
+            </div>
+          ) : null}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email Address
+          </label>
+          <input
+            type="email"
+            className={
+              formik.touched.email && formik.errors.email
+                ? "form-control is-invalid"
+                : "form-control"
+            }
+            id="email"
+            placeholder="name@example.com"
+            onBeforeInput={formik.handleBlur}
+            {...formik.getFieldProps("email")}
+          />
+          {formik.touched.email && formik.errors.email ? (
+            <div id="emailFeedback" className="invalid-feedback">
+              {formik.errors.email}
+            </div>
+          ) : null}
         </div>
         <div className="mb-3 mt-2">
           <label htmlFor="password" className="form-label">
@@ -88,13 +125,21 @@ const Register = () => {
           </label>
           <input
             type="password"
-            className="form-control"
+            className={
+              formik.touched.password && formik.errors.password
+                ? "form-control is-invalid"
+                : "form-control"
+            }
             id="password"
             placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            onBeforeInput={formik.handleBlur}
+            {...formik.getFieldProps("password")}
           />
+          {formik.touched.password && formik.errors.password ? (
+            <div id="passwordFeedback" className="invalid-feedback">
+              {formik.errors.password}
+            </div>
+          ) : null}
         </div>
         <div className="mb-3 mt-2">
           <label htmlFor="password2" className="form-label">
@@ -102,16 +147,21 @@ const Register = () => {
           </label>
           <input
             type="password"
-            className={message ? "form-control is-invalid" : "form-control"}
+            className={
+              formik.touched.password2 && formik.errors.password2
+                ? "form-control is-invalid"
+                : "form-control"
+            }
             id="password2"
             placeholder="Enter your password again"
-            value={password2}
-            onChange={(e) => setPassword2(e.target.value)}
-            required
+            onBeforeInput={formik.handleBlur}
+            {...formik.getFieldProps("password2")}
           />
-          <div id="password2Feedback" className="invalid-feedback">
-            {message}
-          </div>
+          {formik.touched.password2 && formik.errors.password2 ? (
+            <div id="password2Feedback" className="invalid-feedback">
+              {formik.errors.password2}
+            </div>
+          ) : null}
         </div>
         <button
           className={
