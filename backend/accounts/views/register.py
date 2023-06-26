@@ -67,6 +67,8 @@ class VerifyOtpAPIView(APIView):
         if user is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         if utils.validate_otp(user, data.get('code')):
+            user.is_active = True
+            user.save()
             result = serializers.UserTokenSerializer(user, many=False)
             return Response(result.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
