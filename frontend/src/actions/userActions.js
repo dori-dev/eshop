@@ -8,6 +8,19 @@ import {
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 
+const getErrorMessage = (error) => {
+  const { data } = error.response;
+  let result = Object.entries(data)
+    .map(([key, value]) => {
+      if (typeof value === "object") {
+        value = value.join(", ");
+      }
+      return key + ": " + value;
+    })
+    .join("\n");
+  return result ? result : error.message;
+};
+
 export const userLoginAction = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN.REQUEST });
@@ -32,10 +45,7 @@ export const userLoginAction = (email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LOGIN.FAIL,
-      payload:
-        error.message && error.response
-          ? error.response.data.message || error.message
-          : error.message,
+      payload: getErrorMessage(error),
     });
   }
 };
@@ -75,13 +85,9 @@ export const userRegisterAction =
         localStorage.setItem("emailForVerify", email);
       }
     } catch (error) {
-      const { data } = error.response;
-      var result = Object.entries(data)
-        .map(([key, value]) => key + ": " + value.join(", "))
-        .join("\n");
       dispatch({
         type: USER_REGISTER.FAIL,
-        payload: result ? result : error.message,
+        payload: getErrorMessage(error),
       });
     }
   };
@@ -101,10 +107,7 @@ export const getUserDetailsAction = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DETAILS.FAIL,
-      payload:
-        error.message && error.response
-          ? error.response.data.message || error.message
-          : error.message,
+      payload: getErrorMessage(error),
     });
   }
 };
