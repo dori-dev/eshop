@@ -3,6 +3,7 @@ import {
   USER_REGISTER,
   USER_DETAILS,
   UPDATE_PROFILE,
+  VERIFY_CODE,
 } from "../constants/userConstants";
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
@@ -149,4 +150,43 @@ export const updateAccessTokenAction = (tokens) => (dispatch, getState) => {
     payload: userInfo,
   });
   localStorage.setItem("userInfo", JSON.stringify(userInfo));
+};
+
+export const verifyCodeAction = (email, code) => async (dispatch) => {
+  try {
+    dispatch({ type: VERIFY_CODE.REQUEST });
+    const config = {
+      header: {
+        "Content-type": "application/json",
+      },
+    };
+    const { data } = await axios.post(
+      "/api/v1/accounts/verify/",
+      {
+        email: email,
+        code: code,
+      },
+      config
+    );
+    dispatch({
+      type: VERIFY_CODE.SUCCESS,
+      payload: data,
+    });
+    dispatch({
+      type: USER_LOGIN.REQUEST,
+    });
+    dispatch({
+      type: USER_LOGIN.SUCCESS,
+      payload: data,
+    });
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: VERIFY_CODE.FAIL,
+      payload:
+        error.message && error.response
+          ? error.response.data.message || error.message
+          : error.message,
+    });
+  }
 };

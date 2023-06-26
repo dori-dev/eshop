@@ -3,6 +3,7 @@ import {
   USER_REGISTER,
   USER_DETAILS,
   UPDATE_PROFILE,
+  VERIFY_CODE,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -30,6 +31,19 @@ export const userRegisterReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_REGISTER.LOGOUT:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const verifyCodeReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VERIFY_CODE.REQUEST:
+      return { loading: true };
+    case VERIFY_CODE.SUCCESS:
+      return { userInfo: action.payload, loading: false };
+    case VERIFY_CODE.FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

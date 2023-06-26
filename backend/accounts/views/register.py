@@ -49,6 +49,7 @@ class RegisterAPIView(APIView):
 
 class VerifyOtpAPIView(APIView):
     throttle_scope = 'otp_verify'
+    serializer_class = serializers.OtpSerializer
 
     def get_user(self, email):
         try:
@@ -57,7 +58,7 @@ class VerifyOtpAPIView(APIView):
             None
 
     def post(self, request):
-        serializer = serializers.OtpSerializer(
+        serializer = self.serializer_class(
             data=request.data,
         )
         serializer.is_valid(raise_exception=True)
