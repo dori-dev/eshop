@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-
+from accounts.models import OtpCode
 User = get_user_model()
 
 
@@ -32,6 +32,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         data = self.validated_data
+        data['is_active'] = False
         user = User.objects.create_user(**data)
         return user
 
@@ -118,3 +119,22 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         result['name'] = user.name or 'Guest User'
         result['is_admin'] = user.is_staff
         return result
+
+
+class OtpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OtpCode
+        fields = [
+            'email',
+            'code',
+        ]
+        extra_kwargs = {
+            'email': {
+                'required': True,
+                'allow_blank': False,
+            },
+            'code': {
+                'required': True,
+                'allow_blank': True,
+            },
+        }
