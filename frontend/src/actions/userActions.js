@@ -46,6 +46,7 @@ export const userLogoutAction = () => (dispatch) => {
   dispatch({ type: USER_REGISTER.LOGOUT });
   dispatch({ type: USER_DETAILS.RESET });
   dispatch({ type: UPDATE_PROFILE.RESET });
+  dispatch({ type: VERIFY_CODE.RESET });
 };
 
 export const userRegisterAction =
@@ -57,7 +58,7 @@ export const userRegisterAction =
           "Content-type": "application/json",
         },
       };
-      const { data } = await axios.post(
+      const response = await axios.post(
         "/api/v1/accounts/register/",
         {
           name: name,
@@ -66,25 +67,21 @@ export const userRegisterAction =
         },
         config
       );
-      dispatch({
-        type: USER_REGISTER.SUCCESS,
-        payload: data,
-      });
-      dispatch({
-        type: USER_LOGIN.REQUEST,
-      });
-      dispatch({
-        type: USER_LOGIN.SUCCESS,
-        payload: data,
-      });
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      if (response.status === 201) {
+        dispatch({
+          type: USER_REGISTER.SUCCESS,
+          payload: email,
+        });
+        localStorage.setItem("emailForVerify", email);
+      }
     } catch (error) {
+      const { data } = error.response;
+      var result = Object.entries(data)
+        .map(([key, value]) => key + ": " + value.join(", "))
+        .join("\n");
       dispatch({
         type: USER_REGISTER.FAIL,
-        payload:
-          error.message && error.response
-            ? error.response.data.message || error.message
-            : error.message,
+        payload: result ? result : error.message,
       });
     }
   };
@@ -181,12 +178,13 @@ export const verifyCodeAction = (email, code) => async (dispatch) => {
     });
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
+    const { data } = error.response;
+    var result = Object.entries(data)
+      .map(([key, value]) => key + ": " + value.join(", "))
+      .join("\n");
     dispatch({
       type: VERIFY_CODE.FAIL,
-      payload:
-        error.message && error.response
-          ? error.response.data.message || error.message
-          : error.message,
+      payload: result ? result : "This code is not valid.",
     });
   }
 };

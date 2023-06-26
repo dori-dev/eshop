@@ -105,6 +105,7 @@ const Login = () => {
             ) : null}
           </div>
           <button
+            type="submit"
             className={
               loading
                 ? "btn btn-primary w-100 disabled"

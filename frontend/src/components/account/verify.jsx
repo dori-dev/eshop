@@ -1,7 +1,7 @@
 import Form from "../formContainer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { userRegisterAction } from "../../actions/userActions";
+import { verifyCodeAction } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../message";
 import RingLoader from "react-spinners/RingLoader";
@@ -12,13 +12,19 @@ import * as Yup from "yup";
 const Verify = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // redirect parameters
+  const { search } = useLocation();
+  const query = getQueries(search);
+  const redirect = query["redirect"] ? query["redirect"] : "/";
+  // email
+  const email = localStorage.getItem("emailForVerify");
   // formik
   const formik = useFormik({
     initialValues: {
-      code: null,
+      code: "",
     },
     onSubmit: (values) => {
-      dispatch(userRegisterAction(values.name, values.email, values.password));
+      dispatch(verifyCodeAction(email, values.code));
     },
     validationSchema: Yup.object({
       code: Yup.number()
@@ -31,20 +37,17 @@ const Verify = () => {
         ),
     }),
   });
-  // redirect parameters
-  const { search } = useLocation();
-  const query = getQueries(search);
-  const redirect = query["redirect"] ? query["redirect"] : "/";
   // redux
-  const { error, userInfo, loading } = useSelector(
-    (state) => state.userRegister
-  );
+  const { error, userInfo, loading } = useSelector((state) => state.verifyCode);
   // redirect when user created
   useEffect(() => {
-    if (userInfo) {
-      navigate(`/verify?redirect=${redirect}`);
+    if (!email) {
+      navigate(`/register?redirect=${redirect}`);
     }
-  }, [navigate, redirect, userInfo]);
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, userInfo, email]);
   // send another verification code
   const sendNewVerificationCode = () => {
     console.log("sent");
@@ -88,6 +91,7 @@ const Verify = () => {
           ) : null}
         </div>
         <button
+          type="submit"
           className={
             loading ? "btn btn-primary w-100 disabled" : "btn btn-primary w-100"
           }
@@ -99,7 +103,7 @@ const Verify = () => {
         <div className="col-6">5:00 remaining</div>
         <div className="col-6">
           <button
-            onClick={sendNewVerificationCode()}
+            onClick={sendNewVerificationCode}
             className="btn btn-dark btn-sm"
           >
             New Verification Code

@@ -26,7 +26,7 @@ const Register = () => {
     validationSchema: Yup.object({
       name: Yup.string()
         .max(50, "Name must be 50 characters or less.")
-        .min(8, "Name must be 8 characters or more.")
+        .min(4, "Name must be 4 characters or more.")
         .required("Name is required."),
       email: Yup.string()
         .email("Enter valid email address.")
@@ -50,15 +50,15 @@ const Register = () => {
   const query = getQueries(search);
   const redirect = query["redirect"] ? query["redirect"] : "/";
   // redux
-  const { error, userInfo, loading } = useSelector(
+  const { error, emailForVerify, loading } = useSelector(
     (state) => state.userRegister
   );
   // redirect when logged in
   useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
+    if (emailForVerify) {
+      navigate(`/verify?redirect=${redirect}`);
     }
-  }, [navigate, redirect, userInfo]);
+  }, [navigate, redirect, emailForVerify]);
   return (
     <Form>
       <h1 className="mb-4">Register</h1>
@@ -164,6 +164,7 @@ const Register = () => {
           ) : null}
         </div>
         <button
+          type="submit"
           className={
             loading ? "btn btn-primary w-100 disabled" : "btn btn-primary w-100"
           }

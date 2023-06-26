@@ -26,7 +26,7 @@ export const userRegisterReducer = (state = {}, action) => {
     case USER_REGISTER.REQUEST:
       return { loading: true };
     case USER_REGISTER.SUCCESS:
-      return { userInfo: action.payload, loading: false };
+      return { emailForVerify: action.payload, loading: false };
     case USER_REGISTER.FAIL:
       return { loading: false, error: action.payload };
     case USER_REGISTER.LOGOUT:
@@ -44,6 +44,8 @@ export const verifyCodeReducer = (state = {}, action) => {
       return { userInfo: action.payload, loading: false };
     case VERIFY_CODE.FAIL:
       return { loading: false, error: action.payload };
+    case VERIFY_CODE.RESET:
+      return {};
     default:
       return state;
   }
