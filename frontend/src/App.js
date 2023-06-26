@@ -7,6 +7,7 @@ import ProductDetail from "./components/products/detail";
 import Login from "./components/account/login";
 import Register from "./components/account/register";
 import Profile from "./components/account/profile";
+import Verify from "./components/account/verify";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/verify" element={<Verify />} />
         <Route path="/cart/:id?" element={<Cart />} />
       </Routes>
       <Footer />
