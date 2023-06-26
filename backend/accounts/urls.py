@@ -18,5 +18,6 @@ urlpatterns = [
     path('profile/update/', views.UpdateProfileAPIView.as_view()),
     path('users/', views.UserListAPIView.as_view()),
     path('register/', views.RegisterAPIView.as_view()),
+    path('verify/', views.VerifyOtpAPIView.as_view()),
     path('token/', include(token)),
 ]

@@ -1,6 +1,8 @@
 from datetime import timedelta
 from pathlib import Path
 
+from temp.tmp.source.Django-Shop-master.shop.settings import EMAIL_HOST_USER
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -143,6 +145,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_THROTTLE_RATES': {
         'refresh_token': '2/minute',
+        'otp_verify': '3/minute',
         # 'anon': '10/minute',
         # 'user': '20/minute',
     }
@@ -172,3 +175,4 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'accounts.User'
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST_USER = "sample@gmail.com"
