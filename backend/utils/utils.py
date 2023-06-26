@@ -33,7 +33,7 @@ def validate_otp(user: User, code: str):
     otp_qs = OtpCode.objects.filter(email=user.email)
     if not otp_qs.exists():
         return False
-    otp = otp_qs.first()
+    otp = otp_qs.last()
     if otp.code != code:
         return False
     return check_otp_expiration(otp)

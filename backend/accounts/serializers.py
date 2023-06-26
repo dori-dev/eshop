@@ -32,8 +32,9 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         data = self.validated_data
-        data['is_active'] = False
         user = User.objects.create_user(**data)
+        user.is_active = False
+        user.save()
         return user
 
 
