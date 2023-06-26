@@ -4,7 +4,7 @@ from rest_framework import status
 from django.contrib.auth import get_user_model
 
 from accounts import serializers
-from backend.utils import utils
+from utils import utils
 from accounts.models import OtpCode
 
 

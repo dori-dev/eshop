@@ -1,8 +1,6 @@
 from datetime import timedelta
 from pathlib import Path
 
-from temp.tmp.source.Django-Shop-master.shop.settings import EMAIL_HOST_USER
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
