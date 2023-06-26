@@ -8,6 +8,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         max_length=255,
         unique=True,
+        db_index=True,
     )
     name = models.CharField(
         max_length=64,
