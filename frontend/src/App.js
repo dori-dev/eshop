@@ -2,7 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import Home from "./components/home";
-import Cart from "./components/cart";
+import Cart from "./components/ordering/cart";
+import Shipping from "./components/ordering/shipping";
 import ProductDetail from "./components/products/detail";
 import Login from "./components/account/login";
 import Register from "./components/account/register";
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/verify" element={<Verify />} />
         <Route path="/cart/:id?" element={<Cart />} />
+        <Route path="/shipping" element={<Shipping />} />
       </Routes>
       <Footer />
     </>
