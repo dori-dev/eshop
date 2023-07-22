@@ -31,11 +31,13 @@ const reducer = combineReducers({
 
 const cartItems = localStorage.getItem("cartItems");
 const shippingAddress = localStorage.getItem("shippingAddress");
+const paymentMethod = localStorage.getItem("paymentMethod");
 const userInfo = localStorage.getItem("userInfo");
 const initialState = {
   cart: {
     cartItems: cartItems ? JSON.parse(cartItems) : [],
     shippingAddress: shippingAddress ? JSON.parse(shippingAddress) : {},
+    paymentMethod: paymentMethod ? JSON.parse(paymentMethod) : {},
   },
   user: { userInfo: userInfo ? JSON.parse(userInfo) : null },
 };
