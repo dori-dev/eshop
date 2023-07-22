@@ -99,3 +99,16 @@ a:hover .go-back-icon {
   padding: unset;
   margin-right: 10px;
 }
+
+.checkout-step .nav-link {
+  color: #555;
+}
+
+.checkout-step .nav-link.active {
+  color: #111;
+  font-weight: bold;
+}
+
+.checkout-step .nav-item:has(.nav-link.active) ~ .nav-item .nav-link {
+  pointer-events: none;
+}

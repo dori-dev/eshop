@@ -3,11 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { saveShippingAddress } from "../../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "../message";
-import RingLoader from "react-spinners/RingLoader";
 import { useFormik } from "formik";
-import { override } from "../account/utils";
 import * as Yup from "yup";
+import CheckOutSteps from "./steps";
 
 const Shipping = () => {
   const dispatch = useDispatch();
@@ -52,6 +50,7 @@ const Shipping = () => {
   }, [navigate, shippingAddress]);
   return (
     <Form>
+      <CheckOutSteps />
       <h1 className="mb-4">Shipping</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-3">
