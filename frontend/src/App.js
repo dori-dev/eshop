@@ -5,6 +5,7 @@ import Home from "./components/home";
 import Cart from "./components/checkout/cart";
 import Shipping from "./components/checkout/shipping";
 import Payment from "./components/checkout/payment";
+import Order from "./components/checkout/order";
 import ProductDetail from "./components/products/detail";
 import Login from "./components/account/login";
 import Register from "./components/account/register";
@@ -16,17 +17,18 @@ const App = () => {
     <>
       <Navbar />
       <div className="content">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/verify" element={<Verify />} />
-        <Route path="/cart/:id?" element={<Cart />} />
-        <Route path="/shipping" element={<Shipping />} />
-        <Route path="/payment" element={<Payment />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/cart/:id?" element={<Cart />} />
+          <Route path="/shipping" element={<Shipping />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/order" element={<Order />} />
+        </Routes>
       </div>
       <Footer />
     </>

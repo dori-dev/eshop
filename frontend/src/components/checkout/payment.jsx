@@ -1,4 +1,3 @@
-import Form from "../formContainer";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { savePaymentMethod } from "../../actions/cartActions";
@@ -100,8 +99,14 @@ const Payment = () => {
               </h2>
             </div>
             <div className="col-md-4 col-sm-10 col-12 mt-2">
-              <button type="submit" className="btn btn-primary w-100">
-                Payment
+              <button
+                onClick={() => {
+                  navigate("/order");
+                }}
+                type="submit"
+                className="btn btn-primary w-100"
+              >
+                Place Order
               </button>
             </div>
           </div>

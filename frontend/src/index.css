@@ -65,6 +65,12 @@ a:hover .go-back-icon {
   object-fit: contain;
 }
 
+.order-img {
+  max-width: 100%;
+  max-height: 10vh;
+  object-fit: contain;
+}
+
 .title-icon {
   fill: #111;
   width: 40px;
@@ -115,4 +121,8 @@ a:hover .go-back-icon {
 
 .content {
   min-height: 100vh;
+}
+
+.w-fit {
+  width: fit-content;
 }
