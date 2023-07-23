@@ -1,10 +1,11 @@
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { addToCart, removeFromCart } from "../../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../message";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { search } = useLocation();
   let query = {};
@@ -24,7 +25,7 @@ const Cart = () => {
     }
   }, [id, quantity, dispatch]);
   const checkoutHandler = () => {
-    console.log("checkout");
+    navigate("/shipping");
   };
   return (
     <div className="container-fluid">

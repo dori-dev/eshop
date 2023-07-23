@@ -4,6 +4,7 @@ import Footer from "./components/footer";
 import Home from "./components/home";
 import Cart from "./components/checkout/cart";
 import Shipping from "./components/checkout/shipping";
+import Payment from "./components/checkout/payment";
 import ProductDetail from "./components/products/detail";
 import Login from "./components/account/login";
 import Register from "./components/account/register";
@@ -14,6 +15,7 @@ const App = () => {
   return (
     <>
       <Navbar />
+      <div className="content">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetail />} />
@@ -23,7 +25,9 @@ const App = () => {
         <Route path="/verify" element={<Verify />} />
         <Route path="/cart/:id?" element={<Cart />} />
         <Route path="/shipping" element={<Shipping />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
+      </div>
       <Footer />
     </>
   );

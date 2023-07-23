@@ -112,3 +112,7 @@ a:hover .go-back-icon {
 .checkout-step .nav-item:has(.nav-link.active) ~ .nav-item .nav-link {
   pointer-events: none;
 }
+
+.content {
+  min-height: 100vh;
+}
