@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from .products import Product
+from backend.products.models import Product
 
 
 class ShippingAddress(models.Model):
