@@ -36,7 +36,7 @@ const Order = () => {
                       {shippingAddress.country} - {shippingAddress.city} -{" "}
                       {shippingAddress.address}
                       <br />
-                      Postal Code: {shippingAddress.postalCode}
+                      Zip Code: {shippingAddress.zipCode}
                     </div>
                   </div>
                 </li>

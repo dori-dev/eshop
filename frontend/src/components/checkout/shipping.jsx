@@ -16,7 +16,7 @@ const Shipping = () => {
       country: "",
       city: "",
       address: "",
-      postalCode: "",
+      zipCode: "",
     },
     onSubmit: (values) => {
       dispatch(saveShippingAddress(values));
@@ -34,7 +34,7 @@ const Shipping = () => {
         .max(50, "Address must be 100 characters or less")
         .min(2, "Address must be 5 characters or more")
         .required("Address field is required."),
-      postalCode: Yup.string()
+      zipCode: Yup.string()
         .max(10, "Postal Code must be 10 characters or less")
         .min(4, "Postal Code must be 4 characters or more")
         .required("Postal Code field is required."),
@@ -126,18 +126,18 @@ const Shipping = () => {
           <input
             type="text"
             className={
-              formik.touched.postalCode && formik.errors.postalCode
+              formik.touched.zipCode && formik.errors.zipCode
                 ? "form-control is-invalid"
                 : "form-control"
             }
-            id="postalCode"
-            placeholder="Enter your postal code"
+            id="zipCode"
+            placeholder="Enter your zip code"
             onBeforeInput={formik.handleBlur}
-            {...formik.getFieldProps("postalCode")}
+            {...formik.getFieldProps("zipCode")}
           />
-          {formik.touched.postalCode && formik.errors.postalCode ? (
-            <div id="postalCodeFeedback" className="invalid-feedback">
-              {formik.errors.postalCode}
+          {formik.touched.zipCode && formik.errors.zipCode ? (
+            <div id="zipCodeFeedback" className="invalid-feedback">
+              {formik.errors.zipCode}
             </div>
           ) : null}
         </div>
