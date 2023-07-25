@@ -7,19 +7,7 @@ import {
 } from "../constants/userConstants";
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
-
-const getErrorMessage = (error) => {
-  const { data } = error.response;
-  let result = Object.entries(data)
-    .map(([key, value]) => {
-      if (typeof value === "object") {
-        value = value.join(", ");
-      }
-      return key + ": " + value;
-    })
-    .join("\n");
-  return result ? result : error.message;
-};
+import { getErrorMessage } from "../utils/error";
 
 export const userLoginAction = (email, password) => async (dispatch) => {
   try {
