@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from products.models import Product
 from orders.models import Order, OrderItem, ShippingAddress
 from orders.serializers import (
-    OrderSerializer, ShippingAddressSerializer, OrderDetailSerializer
+    OrderSerializer, ShippingSerializer, OrderDetailSerializer
 )
 
 
@@ -27,10 +27,10 @@ class AddOrderItemAPIView(APIView):
             )
 
     def calculate_stock_count(self, product: Product, quantity):
-        if product.count_in_stock < quantity:
+        if product.count_in_stock < int(quantity):
             message = f'The quantity of product "{product.name}" is not enough!'
             raise ValidationError(message)
-        product.count_in_stock -= quantity
+        product.count_in_stock -= int(quantity)
         product.save()
         return True
 
@@ -45,7 +45,7 @@ class AddOrderItemAPIView(APIView):
 
     def create_shipping_address(self, data: dict, user):
         shipping_address = data.get('shipping_address')
-        serializer = ShippingAddressSerializer(data=data)
+        serializer = ShippingSerializer(data=shipping_address)
         serializer.is_valid(raise_exception=True)
         if len(shipping_address) != 4:
             message = 'Shipping address must just have country, city, address, and zip_code.'

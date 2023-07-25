@@ -91,13 +91,13 @@ class OrderSerializer(serializers.Serializer):
 class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShippingAddress
-        fields = '__all'
+        fields = '__all__'
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = '__all'
+        fields = '__all__'
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):
@@ -114,7 +114,9 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         return OrderItemSerializer(items, many=True).data
 
     def get_shipping_address(self, obj):
-        return ShippingAddressSerializer(obj.shipping_address).data
+        return ShippingAddressSerializer(
+            obj.shipping_address,
+        ).data
 
     def get_user(self, obj):
         return UserSerializer(obj.user, many=False).data
