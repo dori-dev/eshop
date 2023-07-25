@@ -17,6 +17,7 @@ import {
   updateProfileReducer,
   verifyCodeReducer,
 } from "./reducers/userReducers";
+import { orderCreateReducer } from "./reducers/orderReducers";
 
 const reducer = combineReducers({
   listProduct: listProductReducer,
@@ -27,6 +28,7 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   updateProfile: updateProfileReducer,
   verifyCode: verifyCodeReducer,
+  orderCreate: orderCreateReducer,
 });
 
 const cartItems = localStorage.getItem("cartItems");
