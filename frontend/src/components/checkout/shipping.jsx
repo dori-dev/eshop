@@ -35,9 +35,9 @@ const Shipping = () => {
         .min(2, "Address must be 5 characters or more")
         .required("Address field is required."),
       zipCode: Yup.string()
-        .max(10, "Postal Code must be 10 characters or less")
-        .min(4, "Postal Code must be 4 characters or more")
-        .required("Postal Code field is required."),
+        .max(10, "Zip Code must be 10 characters or less")
+        .min(4, "Zip Code must be 4 characters or more")
+        .required("Zip Code field is required."),
     }),
   });
   // redux
@@ -121,7 +121,7 @@ const Shipping = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
-            Postal Code
+            Zip Code
           </label>
           <input
             type="text"

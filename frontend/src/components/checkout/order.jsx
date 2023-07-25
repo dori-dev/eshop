@@ -1,26 +1,53 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import CheckOutSteps from "./steps";
 import Message from "../message";
+import { createOrder } from "../../actions/orderActions";
+import { ORDER_CREATE } from "../../constants/orderConstants";
+import RingLoader from "react-spinners/RingLoader";
+import { override } from "../account/utils";
 
 const Order = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // redux
   const { cartItems, shippingAddress } = useSelector((state) => state.cart);
+  const { error, loading, order, success } = useSelector(
+    (state) => state.orderCreate
+  );
   // items cost
   const itemsCost = cartItems.reduce(
     (total, item) => total + parseFloat(item.price) * parseInt(item.quantity),
     0
   );
+  const taxPrice = 0;
+  const shippingPrice = 10;
+  const totalPrice = itemsCost + 10;
+  // place order
+  const placeOrder = () => {
+    dispatch(
+      createOrder({
+        order_items: cartItems,
+        shipping_address: shippingAddress,
+        payment_method: "PayPal",
+        items_cost: itemsCost,
+        shipping_price: shippingPrice,
+        tax_price: taxPrice,
+        total_price: totalPrice,
+      })
+    );
+  };
   // redirect when shipping address is null
   useEffect(() => {
     if (!shippingAddress.address) {
       navigate("/shipping");
     }
-  }, [navigate, shippingAddress]);
+    if (success) {
+      dispatch({ type: ORDER_CREATE.RESET });
+      navigate(`/order/${order.id}/`);
+    }
+  }, [navigate, dispatch, shippingAddress, success, order]);
   return (
     <div className="container-fluid mt-4">
       <div className="row justify-content-md-center">
@@ -95,22 +122,38 @@ const Order = () => {
                     <div className="mb-2 border-bottom pb-1 w-fit">
                       Transport cost:
                       <b className="mx-2">
-                        <span className="dollar">$</span>10
+                        <span className="dollar">$</span>
+                        {shippingPrice}
                       </b>
                     </div>
                     <div className="">
                       Total:{" "}
                       <b className="mx-2">
                         <span className="dollar">$</span>
-                        {itemsCost + 10}
+                        {totalPrice}
                       </b>
                     </div>
                   </div>
                 </li>
                 <li className="list-group-item row">
                   <div className="col-md-6 col-sm-8 col-12">
-                    <button className="mt-2 btn btn-lg btn-dark btn-block w-100">
-                      Checkout
+                    {error && <Message variant="danger" message={error} />}
+                    {loading ? (
+                      <RingLoader
+                        color="#000"
+                        loading={loading}
+                        cssOverride={override}
+                        size={150}
+                        aria-label="Loading"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    <button
+                      onClick={placeOrder}
+                      className="mt-2 btn btn-lg btn-dark btn-block w-100"
+                    >
+                      Place Order
                     </button>
                   </div>
                 </li>

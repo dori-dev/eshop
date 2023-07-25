@@ -26,6 +26,8 @@ export const removeFromCart = (id) => (dispatch, getState) => {
 };
 
 export const saveShippingAddress = (data) => (dispatch, getState) => {
+  data.zip_code = data.zipCode;
+  delete data.zipCode;
   dispatch({
     type: CART_ITEM.SAVE_SHIPPING_ADDRESS,
     payload: data,
