@@ -56,6 +56,12 @@ class Order(models.Model):
         null=True,
         blank=True,
     )
+    items_cost = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
     tax_price = models.DecimalField(
         max_digits=7,
         decimal_places=2,

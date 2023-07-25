@@ -47,6 +47,11 @@ class OrderSerializer(serializers.Serializer):
     order_items = CheckOrderItemSerializer(many=True)
     shipping_address = ShippingSerializer()
     payment_method = serializers.CharField(required=True)
+    items_cost = serializers.DecimalField(
+        required=True,
+        max_digits=7,
+        decimal_places=2,
+    )
     tax_price = serializers.DecimalField(
         required=True,
         max_digits=7,
