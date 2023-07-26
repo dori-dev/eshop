@@ -5,6 +5,7 @@ import {
   UPDATE_PROFILE,
   VERIFY_CODE,
 } from "../constants/userConstants";
+import { ORDER_LIST } from "../constants/orderConstants";
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 import { getErrorMessage } from "../utils/error";
@@ -45,6 +46,7 @@ export const userLogoutAction = () => (dispatch) => {
   dispatch({ type: USER_DETAILS.RESET });
   dispatch({ type: UPDATE_PROFILE.RESET });
   dispatch({ type: VERIFY_CODE.RESET });
+  dispatch({ type: ORDER_LIST.RESET });
 };
 
 export const userRegisterAction =
