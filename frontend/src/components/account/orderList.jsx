@@ -8,7 +8,6 @@ import { formatDate } from "../../utils/date";
 const OrderList = () => {
   // order list
   const { orders, error, loading } = useSelector((state) => state.orders);
-  console.log(orders);
   return (
     <div>
       <h1 className="mb-4">All Orders</h1>
