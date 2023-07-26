@@ -64,7 +64,7 @@ class AddOrderItemAPIView(APIView):
             name=product.name,
             quantity=order_item.get('quantity', 1),
             price=order_item.get('price', 10.0),
-            image=product.image.url,
+            image=f'http://127.0.0.1:8000/{product.image.url}/',
         )
 
     def post(self, request):

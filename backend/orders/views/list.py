@@ -12,8 +12,8 @@ class OrderListAPIView(APIView):
         IsAuthenticated
     ]
 
-    def get(self, request, pk):
+    def get(self, request):
         user = request.user
-        orders = user.orders.all()
+        orders = user.orders.order_by('-created_at')
         serializer = OrderDetailSerializer(orders, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
