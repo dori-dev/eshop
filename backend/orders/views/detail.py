@@ -1,12 +1,18 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from orders.models import Order
 from orders.serializers import OrderDetailSerializer
 
 
 class OrderDetailAPIView(APIView):
+    serializer_class = OrderDetailSerializer
+    permission_classes = [
+        IsAuthenticated
+    ]
+
     def get_order(self, pk):
         try:
             return Order.objects.get(pk=pk)

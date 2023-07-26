@@ -45,6 +45,7 @@ class Order(models.Model):
         get_user_model(),
         on_delete=models.SET_NULL,
         null=True,
+        related_name='orders',
     )
     shipping_address = models.ForeignKey(
         ShippingAddress,
