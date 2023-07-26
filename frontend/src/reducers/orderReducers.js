@@ -29,7 +29,7 @@ export const orderDetailsReducer = (
     case ORDER_DETAILS.REQUEST:
       return { loading: true };
     case ORDER_DETAILS.SUCCESS:
-      return { orderItems: action.payload, loading: false };
+      return { order: action.payload, loading: false };
     case ORDER_DETAILS.FAIL:
       return { loading: false, error: action.payload };
     default:

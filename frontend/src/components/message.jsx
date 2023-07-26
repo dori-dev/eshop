@@ -42,7 +42,7 @@ const Message = ({ variant, message, closable }) => {
   };
   return (
     <div
-      className={`alert alert-${variant} d-flex align-items-center me-md-5 p-2 alert-dismissible fade show`}
+      className={`alert alert-${variant} d-flex align-items-center me-md-5 p-2 alert-dismissible fade show w-fit`}
       role="alert"
     >
       {icon[variant]}

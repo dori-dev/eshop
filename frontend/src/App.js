@@ -6,6 +6,7 @@ import Cart from "./components/checkout/cart";
 import Shipping from "./components/checkout/shipping";
 import Payment from "./components/checkout/payment";
 import Order from "./components/checkout/order";
+import OrderDetail from "./components/checkout/orderDetail";
 import ProductDetail from "./components/products/detail";
 import Login from "./components/account/login";
 import Register from "./components/account/register";
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/shipping" element={<Shipping />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/order/:id/" element={<OrderDetail />} />
         </Routes>
       </div>
       <Footer />
