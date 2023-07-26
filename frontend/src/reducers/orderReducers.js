@@ -1,4 +1,4 @@
-import { ORDER_CREATE } from "../constants/orderConstants";
+import { ORDER_CREATE, ORDER_DETAILS } from "../constants/orderConstants";
 import { CART_ITEM } from "../constants/cartConstants";
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -16,6 +16,22 @@ export const orderCreateReducer = (state = {}, action) => {
         ...state,
         cartItems: [],
       };
+    default:
+      return state;
+  }
+};
+
+export const orderDetailsReducer = (
+  state = { orderItems: [], shippingAddress: {} },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_DETAILS.REQUEST:
+      return { loading: true };
+    case ORDER_DETAILS.SUCCESS:
+      return { orderItems: action.payload, loading: false };
+    case ORDER_DETAILS.FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
