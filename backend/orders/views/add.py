@@ -1,3 +1,5 @@
+from typing import List
+
 from django.db import transaction
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework import status
@@ -77,12 +79,19 @@ class AddOrderItemAPIView(APIView):
             )
         with transaction.atomic():
             pass
-        order = self.create_order(data, request.user)
-        self.create_shipping_address(data, request.user)
+        order: Order = self.create_order(data, request.user)
+        address = self.create_shipping_address(data, request.user)
         for order_item in order_items:
             product = self.get_product(pk=order_item.get('product'))
             quantity = order_item.get('quantity')
             self.create_order_item(order_item, product, order)
             self.calculate_stock_count(product, quantity)
+        items_cost = 0
+        items: List[OrderItem] = order.items.all()
+        for item in items:
+            items_cost += item.price * item.quantity
+        order.items_cost = items_cost
+        order.shipping_address = address
+        order.save()
         serializer = OrderDetailSerializer(order, many=False)
         return Response(serializer.data)

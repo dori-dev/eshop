@@ -110,7 +110,7 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_order_items(self, obj):
-        items = obj.orderitem_set.all()
+        items = obj.items.all()
         return OrderItemSerializer(items, many=True).data
 
     def get_shipping_address(self, obj):
