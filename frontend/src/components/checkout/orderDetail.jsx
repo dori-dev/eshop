@@ -5,17 +5,13 @@ import { override } from "../account/utils";
 import { useParams, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getOrderDetails } from "../../actions/orderActions";
+import { formatDate } from "../../utils/date";
 
 const OrderDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   // redux
   const { error, loading, order } = useSelector((state) => state.orderDetails);
-  var createdAt = "";
-  if (order) {
-    const time = new Date(order.created_at);
-    createdAt = `${time.getFullYear()}/${time.getMonth()}/${time.getDate()}`;
-  }
   useEffect(() => {
     if (!order || order.id !== Number(id)) {
       dispatch(getOrderDetails(Number(id)));
@@ -38,7 +34,9 @@ const OrderDetail = () => {
       {order ? (
         <div className="container-fluid mt-4">
           <h1>Order #{order.id}</h1>
-          <span>This order created at {createdAt}</span>
+          <span>
+            This order created at {formatDate(order.created_at, true)}
+          </span>
           <hr />
           <div className="mb-4">
             <h2 className="fw-bold">User</h2>
@@ -67,7 +65,7 @@ const OrderDetail = () => {
             {order.is_delivered ? (
               <div>
                 <span className="fw-bold">delivered at: </span>
-                {order.delivered_at}
+                {formatDate(order.delivered_at, true)}
               </div>
             ) : (
               <Message
@@ -81,7 +79,7 @@ const OrderDetail = () => {
             {order.is_paid ? (
               <div>
                 <span className="fw-bold">paid at: </span>
-                {order.paid_at}
+                {formatDate(order.paid_at, true)}
               </div>
             ) : (
               <div
@@ -128,7 +126,7 @@ const OrderDetail = () => {
                         className="d-flex justify-content-start justify-content-md-center"
                       >
                         <img
-                          src={`http://127.0.0.1:8000${item.image}`}
+                          src={item.image}
                           className="order-img my-4 rounded"
                           alt={item.name}
                         />

@@ -4,11 +4,13 @@ import {
   getUserDetailsAction,
   updateUserProfileAction,
 } from "../../actions/userActions";
+import { getOrderList } from "../../actions/orderActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../message";
 import RingLoader from "react-spinners/RingLoader";
 import { UPDATE_PROFILE } from "../../constants/userConstants";
 import { override } from "./utils";
+import OrderList from "./orderList";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -47,6 +49,7 @@ const Profile = () => {
   };
   useEffect(() => {
     if (userInfo) {
+      dispatch(getOrderList());
       if (success) {
         setUpdatedMessage("Profile updated successfully!");
       }
@@ -159,7 +162,9 @@ const Profile = () => {
             </form>
           </div>
         </div>
-        <div className="col-md-8">all orders</div>
+        <div className="col-md-8">
+          <OrderList />
+        </div>
       </div>
     </>
   );
