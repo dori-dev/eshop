@@ -12,6 +12,9 @@ class Category(models.Model):
         blank=True,
         related_name='children',
     )
+    is_child = models.BooleanField(
+        default=False,
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
@@ -19,5 +22,12 @@ class Category(models.Model):
         auto_now=True,
     )
 
-    def __str__(self):
+    class Meta:
+        ordering = [
+            'name',
+        ]
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
+    def __str__(self) -> str:
         return self.name
